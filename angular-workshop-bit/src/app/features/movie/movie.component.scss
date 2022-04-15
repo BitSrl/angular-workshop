@@ -1,0 +1,23 @@
+.movie-header-container {
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .movie-header {
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0.75)
+    );
+  }
+}
+
+.extra-info-strip-container {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.movie-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -1,0 +1,12 @@
+.image-container {
+  height: 515px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.movie-overview {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}

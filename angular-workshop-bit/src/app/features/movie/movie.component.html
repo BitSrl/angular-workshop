@@ -1,0 +1,130 @@
+<ng-container *ngIf="movie">
+  <section class="movie-header-container w-100" [style.background-image]="'url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + movie.backdrop_path + ')'">
+    <article class="movie-header d-flex justify-content-center py-5">
+      <div class="d-flex" style="max-height: 450px; max-width: 75%;">
+        <div style="width: 300px;">
+          <div class="movie-poster-container">
+            <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2{{movie.poster_path}}" width="300px" />
+          </div>
+        </div>
+        <div class="p-3 d-flex justify-content-between align-items-start flex-column">
+          <div>
+            <h1>{{movie.original_title}} ({{movie.release_date | date:'yyyy'}})</h1>
+            <h4><ng-container *ngFor="let genre of movie.genres; let index = index">{{ genre.name + (index < movie.genres.length - 1 ? ', ' : '' )}}</ng-container> - {{ movie.runtime | runtime }}</h4> 
+          </div>
+          <div>
+            <h3><em>{{movie.tagline}}</em></h3>
+            <h2>Description</h2>
+            <p style="font-size: 2rem; line-height: 2rem;">{{movie.overview}}</p>
+          </div>
+          <div class="row pt-3">
+            <div class="col-12"><strong>{{ director?.name }}</strong></div>
+            <div class="col-12"><em>Director</em></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+  <section class="extra-info-strip-container w-100">
+    <article class="d-flex justify-content-center w-100">
+      <div style="width: 75%" class="d-flex justify-content-between align-items-center extra-info-strip">
+        <div class="w-25 p-3 text-center"><strong>Status:</strong><br /> {{movie.status}}</div>
+        <div class="w-25 p-3 text-center"><strong>Original Language:</strong><br /> {{movie.original_language}}</div>
+        <div class="w-25 p-3 text-center"><strong>Budget:</strong><br /> {{movie.budget | currency: '$'}}</div>
+        <div class="w-25 p-3 text-center"><strong>Revenue:</strong><br /> {{movie.revenue | currency: '$'}}</div>
+      </div>
+    </article>
+  </section>
+</ng-container>
+<section class="cast-container w-100 mb-5" *ngIf="credits">
+  <article class="d-flex justify-content-center pt-3">
+    <div style="width: 75%;">
+      <div class="px-3 d-flex justify-content-between align-items-center w-100">
+        <h2>Main cast</h2>
+        <div>
+          <button mat-stroked-button color="primary" (click)="viewAllCast()">
+            View all cast and crew <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;" [ngStyle]="{ 'max-width': '2920px' }">
+        <div *ngFor="let people of credits.cast | slice:0:10" fxFlex="292px">
+          <mat-card>
+            <img mat-card-image src="https://image.tmdb.org/t/p/w276_and_h350_face{{people.profile_path}}" alt="Photo of {{people.name}}" width="276px" height="350px">
+            <div class="p-2">
+              <p><strong>{{people.name}}</strong></p>
+              <p>{{people.character}}</p>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+<section class="extra-info-strip-container w-100">
+  <article class="d-flex justify-content-center w-100">
+    <div style="width: 75%" class="d-flex justify-content-between align-items-center extra-info-strip">
+      <div class="w-25 p-3 text-center"><strong>Status:</strong><br /> {{movie?.status}}</div>
+      <div class="w-25 p-3 text-center"><strong>Original Language:</strong><br /> {{movie?.original_language}}</div>
+      <div class="w-25 p-3 text-center"><strong>Budget:</strong><br /> {{movie?.budget | currency: '$'}}</div>
+      <div class="w-25 p-3 text-center"><strong>Revenue:</strong><br /> {{movie?.revenue | currency: '$'}}</div>
+    </div>
+  </article>
+</section>
+<section class="similar-movies-container w-100 mb-5" *ngIf="similarMovies">
+  <article class="d-flex justify-content-center pt-3">
+    <div style="width: 75%;">
+      <div class="px-3 d-flex justify-content-between align-items-center w-100">
+        <h2>Similar Movies</h2>
+        <div>
+          <button mat-stroked-button color="primary" (click)="viewAllCast()">
+            View all similar movies <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;" [ngStyle]="{ 'max-width': '2660px' }">
+        <div *ngFor="let movie of similarMovies | slice:0:10" fxFlex="266px">
+          <mat-card>
+            <img mat-card-image src="https://image.tmdb.org/t/p/w250_and_h141_face{{movie.backdrop_path}}" alt="Photo of {{movie.original_title}}" width="250px" height="141px">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="movie-ellipsis w-75"><strong>{{movie.original_title}}</strong></p>
+              <p>{{movie.vote_average | voteAverage }}</p>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+<section class="extra-info-strip-container w-100">
+  <article class="d-flex justify-content-center w-100">
+    <div style="width: 75%" class="d-flex justify-content-between align-items-center extra-info-strip">
+      <div class="w-25 p-3 text-center"><strong>Status:</strong><br /> {{movie?.status}}</div>
+      <div class="w-25 p-3 text-center"><strong>Original Language:</strong><br /> {{movie?.original_language}}</div>
+      <div class="w-25 p-3 text-center"><strong>Budget:</strong><br /> {{movie?.budget | currency: '$'}}</div>
+      <div class="w-25 p-3 text-center"><strong>Revenue:</strong><br /> {{movie?.revenue | currency: '$'}}</div>
+    </div>
+  </article>
+</section>
+<section class="similar-movies-container w-100 mb-5" *ngIf="recommendedMovies">
+  <article class="d-flex justify-content-center pt-3">
+    <div style="width: 75%;">
+      <div class="px-3 d-flex justify-content-between align-items-center w-100">
+        <h2>Suggested Movies</h2>
+        <div>
+          <button mat-stroked-button color="primary" (click)="viewAllCast()">
+            View all suggested movies <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;" [ngStyle]="{ 'max-width': '2660px' }">
+        <div *ngFor="let movie of recommendedMovies | slice:0:10" fxFlex="266px">
+          <mat-card>
+            <img mat-card-image src="https://image.tmdb.org/t/p/w250_and_h141_face{{movie.backdrop_path}}" alt="Photo of {{movie.original_title}}" width="250px" height="141px">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="movie-ellipsis w-75"><strong>{{movie.original_title}}</strong></p>
+              <p>{{movie.vote_average | voteAverage }}</p>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
