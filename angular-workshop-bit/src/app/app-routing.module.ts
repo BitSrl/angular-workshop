@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule) },
-  { path: 'movie/:id', loadChildren: () => import('./features/movie/movie.module').then((m) => m.MovieModule) },
+  { path: 'movie', loadChildren: () => import('./features/movie/movie.module').then((m) => m.MovieModule) },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

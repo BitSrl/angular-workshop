@@ -3,14 +3,36 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { SearchMovieResponse } from "src/app/models/interfaces/search-movie-response.interface";
-import { Movie, MovieCredits } from "src/app/models/interfaces/movie.interface";
+import { Movie, MovieCredits, MovieProvidersResponse, MovieProvidersResponseResult } from "src/app/models/interfaces/movie.interface";
 
 @Injectable({ providedIn: 'root' })
 export class TMDBService {
   private lastQueriedMovies: SearchMovieResponse | undefined;
-  private lastQueriedMovie: Movie | undefined;
+  private _lastQueriedMovie: Movie | undefined;
+  private get lastQueriedMovie(): Movie | undefined {
+    return this._lastQueriedMovie;
+  };
+  private set lastQueriedMovie(movie: Movie | undefined) {
+    if (typeof movie !== 'undefined') {
+      localStorage.removeItem('movie');
+      localStorage.setItem('movie', JSON.stringify(movie));
+    } else {
+      localStorage.removeItem('movie');
+    }
 
-  constructor(private http: HttpClient) {}
+    this._lastQueriedMovie = movie;
+  }
+
+  constructor(private http: HttpClient) {
+    const movieStr: string | null = localStorage.getItem('movie');
+    if (movieStr) {
+      const storedMovie: Movie | undefined = JSON.parse(movieStr);
+  
+      if (storedMovie) {
+        this.lastQueriedMovie = storedMovie;
+      }
+    }
+  }
 
   getLastQueriedMovies = (): SearchMovieResponse | undefined => this.lastQueriedMovies;
   getLastQueriedMovie = (): Movie | undefined => this.lastQueriedMovie;
@@ -59,5 +81,13 @@ export class TMDBService {
   recommendedMovies = (movie_id: number): Observable<SearchMovieResponse> => {
     const params = new HttpParams().append('api_key', environment.apiKey);
     return this.http.get<SearchMovieResponse>(`${environment.baseUrl}/movie/${movie_id}/recommendations`, { params });
+  };
+
+  watchProviders = (movie_id: number): Observable<MovieProvidersResponseResult> => {
+    const params = new HttpParams().append('api_key', environment.apiKey);
+    return this.http.get<MovieProvidersResponse>(`${environment.baseUrl}/movie/${movie_id}/watch/providers`, { params })
+    .pipe(
+      map((response: MovieProvidersResponse) => response.results['IT'])
+    );
   };
 }

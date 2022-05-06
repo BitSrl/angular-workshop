@@ -1,1 +1,18 @@
-<p>recommended works!</p>
+<ng-container *ngIf="recommendedMovies">
+  <div class="row w-100 px-3">
+    <div class="col-12">
+      <h1>Recommended Movies</h1>
+      <app-list-handler [list]="recommendedMovies" [itemTemplate]="itemTemplate" itemSize="266px"></app-list-handler>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #itemTemplate let-element>
+  <div class="w-100" (click)="goToRelatedMovie(element.id)">
+    <img src="https://image.tmdb.org/t/p/w250_and_h141_face{{element.backdrop_path}}" alt="Photo of {{element.original_title}}" width="250px" height="141px" />
+    <div class="d-flex justify-content-between align-items-center ps-2">
+      <p class="movie-ellipsis w-75"><strong>{{element.original_title}}</strong></p>
+      <p>{{element.vote_average | voteAverage }}</p>
+    </div>
+  </div>
+</ng-template>

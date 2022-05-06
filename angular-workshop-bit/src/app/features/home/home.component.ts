@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observer, Subscription } from 'rxjs';
 import { SearchMovieResponse } from 'src/app/models/interfaces/search-movie-response.interface';
 import { TMDBService } from 'src/app/providers/services/tmdb.service';
 
@@ -22,6 +22,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (lastQueriedMovies) {
       this.movies = lastQueriedMovies;
     }
+
+    // const observer: Partial<Observer<any>> = this.observerFactory<any>();
+    // this.searchCtrl.valueChanges.subscribe(observer);
   }
 
   ngOnDestroy(): void {
@@ -34,11 +37,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moviesSubs = this.tmdbService.movies(this.searchCtrl.value).subscribe({
       next: (movies: SearchMovieResponse) => this.movies = movies,
       error: (error: Error) => console.log(error)
-    })
+    });
   };
 
   movieDetails = (movie_id: number): void => {
     this.tmdbService.resetLastQueriedMovie();
     this.router.navigateByUrl(`/movie/${movie_id}`);
   }
+
+  // observerFactory = <T, K>(next: (value: T) => void, error?: (error: K) => void, complete?: () => void): Observer<T> => {
+  //   const observer: Partial<Observer<T>> = { next };
+  //   if (!!error) {
+  //     observer.error = error;
+  //   }
+
+  //   if (!!complete) {
+  //     observer.complete = complete;
+  //   }
+
+  //   return observer as Observer<T>;
+
+  // };
+
+  // FUNZIONE PURA
+  // map = <T, K>(list: Array<T>, callbackFn: (el: T, i?: number, arr?: Array<T>) => K): Array<K> => {
+  //   const newArray: Array<K> = new Array<K>();
+  //   for (let index = 0; index < list.length; index++) {
+  //     const mappedValue: K = callbackFn(list[index], index, list);
+  //     newArray.push(mappedValue);
+  //   }
+
+  //   return newArray;
+  // }
 }

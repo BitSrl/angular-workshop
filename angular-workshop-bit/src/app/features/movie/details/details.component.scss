@@ -1,0 +1,18 @@
+.movie-header-container {
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .movie-header {
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0.75)
+    );
+  }
+}
+
+.movie-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

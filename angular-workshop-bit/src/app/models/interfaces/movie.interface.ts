@@ -78,3 +78,22 @@ export interface MovieCrew extends BaseMoviePeople {
   department: string;
   job: string;
 }
+
+export interface MovieProvidersResponse {
+  id: number;
+  results: { [key: string]: MovieProvidersResponseResult };
+}
+
+export interface MovieProvidersResponseResult {
+  link?: string;
+  flatrate?: Array<MovieProvidersResponseItem>;
+  rent?: Array<MovieProvidersResponseItem>;
+  buy?: Array<MovieProvidersResponseItem>;
+}
+
+export interface MovieProvidersResponseItem {
+  display_priority: number;
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+}
