@@ -53,7 +53,7 @@ export type MovieStatus = 'Rumored' | 'Planned' | 'In Production' | 'Post Produc
 export interface MovieCredits {
   id: number;
   cast: Array<MovieCast>;
-  crew: Array<any>;
+  crew: Array<MovieCrew>;
 }
 
 interface BaseMoviePeople {

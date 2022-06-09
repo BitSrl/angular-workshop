@@ -1,29 +1,30 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { SearchMovieResult, SearchMovieResponse } from 'src/app/models/interfaces/search-movie-response.interface';
+import { map, takeUntil } from 'rxjs';
+import { SearchMovieResult } from 'src/app/models/interfaces/search-movie-response.interface';
 import { TMDBService } from 'src/app/providers/services/tmdb.service';
+import { UnsubscriptionHandler } from 'src/app/utilities/unsubscription-handler';
 
 @Component({
   selector: 'app-similar',
   templateUrl: './similar.component.html',
   styleUrls: ['./similar.component.scss']
 })
-export class SimilarComponent implements OnDestroy {
-  similarSubs: Subscription | undefined;
+export class SimilarComponent extends UnsubscriptionHandler {
   similarMovies: Array<SearchMovieResult> | undefined;
 
   constructor(private router: Router, private tmdbService: TMDBService) {
-    const movie = this.tmdbService.getLastQueriedMovie();
-    this.similarSubs = this.tmdbService.similarMovies(movie!.id).subscribe({
-      next: (response: SearchMovieResponse) => this.similarMovies = response.results
-    });
-  }
+    super();
 
-  ngOnDestroy(): void {
-    if (this.similarSubs) {
-      this.similarSubs.unsubscribe();
-    }
+    const movie = this.tmdbService.getLastQueriedMovie();
+    this.tmdbService.similarMovies(movie!.id)
+    .pipe(
+      map(response => response.results),
+      takeUntil(this.destroy$)
+    )
+    .subscribe({
+      next: movies => this.similarMovies = movies
+    });
   }
 
   goToRelatedMovie = (movie_id: number): Promise<boolean> => this.router.navigateByUrl(`/movie/${movie_id}`);
