@@ -15,7 +15,22 @@ import { DetailsDividerComponent } from './details/details-divider/details-divid
 import { DetailsInfoItemComponent } from './details/details-info-item/details-info-item.component';
 
 @NgModule({
-  declarations: [MovieComponent, DetailsComponent, CreditsComponent, DetailsDividerComponent, DetailsInfoItemComponent ],
-  imports: [CommonModule, MovieRoutingModule, RuntimePipeModule, MatCardModule, FlexLayoutModule, MatButtonModule, VoteAverageModule, ListHandlerModule],
+  declarations: [
+    MovieComponent,
+    DetailsComponent,
+    CreditsComponent,
+    DetailsDividerComponent,
+    DetailsInfoItemComponent,
+  ],
+  imports: [
+    CommonModule,
+    MovieRoutingModule,
+    RuntimePipeModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    VoteAverageModule,
+    ListHandlerModule,
+  ],
 })
 export class MovieModule {}
