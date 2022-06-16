@@ -1,63 +1,83 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observer, Subscription } from 'rxjs';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { debounceTime, distinctUntilChanged, filter, map, Observable, Observer, of, switchMap, takeUntil } from 'rxjs';
 import { SearchMovieResponse } from 'src/app/models/interfaces/search-movie-response.interface';
 import { TMDBService } from 'src/app/providers/services/tmdb.service';
-
+import { UnsubscriptionHandler } from 'src/app/utilities/unsubscription-handler';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent extends UnsubscriptionHandler implements OnInit {
   searchCtrl: FormControl = new FormControl('');
-  moviesSubs: Subscription | undefined;
-  movies: SearchMovieResponse | undefined;
+  movies$: Observable<SearchMovieResponse | undefined> | undefined;
 
-  constructor(private router: Router, private tmdbService: TMDBService) { }
+  constructor(private router: Router, private tmdbService: TMDBService) {
+    super();
+  }
 
   ngOnInit(): void {
-    const lastQueriedMovies = this.tmdbService.getLastQueriedMovies();
-    if (lastQueriedMovies) {
-      this.movies = lastQueriedMovies;
-    }
-
-    // const observer: Partial<Observer<any>> = this.observerFactory<any>();
-    // this.searchCtrl.valueChanges.subscribe(observer);
-  }
-
-  ngOnDestroy(): void {
-    if (this.moviesSubs) {
-      this.moviesSubs.unsubscribe();
-    }
-  }
-
-  search = (): void => {
-    this.moviesSubs = this.tmdbService.movies(this.searchCtrl.value).subscribe({
-      next: (movies: SearchMovieResponse) => this.movies = movies,
-      error: (error: Error) => console.log(error)
+    this.tmdbService.lastQueriedMovies
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: ((response: SearchMovieResponse | undefined) => this.movies$ = of(response))
     });
-  };
+
+    this.searchCtrl.valueChanges
+    .pipe(
+      filter((value: string): boolean => value.length > 2),
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$),
+      switchMap((value: string) => this.tmdbService.movies(value))
+    )
+    .subscribe();
+
+    // let lastValue = '';
+    // this.searchCtrl.valueChanges.subscribe({
+    //   next: (value: string) => {
+    //     setTimeout(() => {
+    //       if (value.length > 2) {
+    //         if (lastValue !== value) {
+    //           lastValue = value;
+
+    //           this.movies$ = this.tmdbService.movies(value);
+    //         }
+    //       }
+    //     }, 500);
+    //   }
+    // });
+  }
+
+  pipeFn = () => {
+    filter((value: string): boolean => value.length > 2),
+    debounceTime(500),
+    distinctUntilChanged(),
+    takeUntil(this.destroy$),
+    switchMap((value: string) => this.tmdbService.movies(value))
+  }
 
   movieDetails = (movie_id: number): void => {
-    this.tmdbService.resetLastQueriedMovie();
+    this.tmdbService.setLastQueriedMovie(undefined);
+    this.tmdbService.setLastQueriedMovieExtendedInfo(undefined);
     this.router.navigateByUrl(`/movie/${movie_id}`);
   }
 
-  // observerFactory = <T, K>(next: (value: T) => void, error?: (error: K) => void, complete?: () => void): Observer<T> => {
-  //   const observer: Partial<Observer<T>> = { next };
-  //   if (!!error) {
-  //     observer.error = error;
-  //   }
+  observerFactory = <T, K>(next: (value: T) => void, error?: (error: K) => void, complete?: () => void): Observer<T> => {
+    const observer: Partial<Observer<T>> = { next };
+    if (!!error) {
+      observer.error = error;
+    }
 
-  //   if (!!complete) {
-  //     observer.complete = complete;
-  //   }
+    if (!!complete) {
+      observer.complete = complete;
+    }
 
-  //   return observer as Observer<T>;
+    return observer as Observer<T>;
 
-  // };
+  };
 
   // FUNZIONE PURA
   // map = <T, K>(list: Array<T>, callbackFn: (el: T, i?: number, arr?: Array<T>) => K): Array<K> => {

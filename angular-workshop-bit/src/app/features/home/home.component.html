@@ -1,19 +1,13 @@
 <main class="container pt-3">
-  <section class="d-flex justify-content-between align-items-center">
-    <article>
-      <mat-form-field appearance="outline" style="width: 200px;">
-        <mat-label>Search</mat-label>
-        <input matInput [formControl]="searchCtrl" placeholder="Enter movie title" />
-      </mat-form-field>
-    </article>
-    <article>
-      <button mat-stroked-button color="primary" (click)="search()">
-        <i class="fa-solid fa-magnifying-glass fa-lg me-2" aria-hidden="true"></i>SEARCH</button>
-    </article>
+  <section class="d-flex justify-content-center align-items-center">
+    <mat-form-field appearance="outline" style="width: 300px;">
+      <mat-label>Search</mat-label>
+      <input matInput [formControl]="searchCtrl" placeholder="Enter movie title" />
+    </mat-form-field>
   </section>
 </main>
 
-<div fxLayout="row wrap" fxLayoutGap="16px grid" class="w-100 ps-3">
+<div fxLayout="row wrap" fxLayoutGap="16px grid" class="w-100 ps-3" *ngIf="movies$ | async as movies">
   <div *ngFor="let movie of movies?.results" fxFlex="358px" (click)="movieDetails(movie.id)" style="cursor: pointer;">
     <mat-card class="p-3" style="min-height: 747px;">
       <mat-card-header>

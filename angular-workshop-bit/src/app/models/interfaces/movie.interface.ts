@@ -1,3 +1,5 @@
+import { SearchMovieResult } from "./search-movie-response.interface";
+
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -96,4 +98,11 @@ export interface MovieProvidersResponseItem {
   logo_path: string;
   provider_id: number;
   provider_name: string;
+}
+
+export interface MovieExtendedInfo {
+  credits: MovieCredits;
+  recommendedMovies: Array<SearchMovieResult>;
+  similarMovies: Array<SearchMovieResult>;
+  watchProviders: MovieProvidersResponseResult;
 }

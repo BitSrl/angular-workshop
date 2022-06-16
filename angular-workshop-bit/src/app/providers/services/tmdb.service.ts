@@ -1,47 +1,32 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable, tap } from "rxjs";
+import { map, Observable, ReplaySubject, tap } from "rxjs";
 import { SearchMovieResponse } from "src/app/models/interfaces/search-movie-response.interface";
-import { Movie, MovieCredits, MovieProvidersResponse, MovieProvidersResponseResult } from "src/app/models/interfaces/movie.interface";
+import { Movie, MovieCredits, MovieExtendedInfo, MovieProvidersResponse, MovieProvidersResponseResult } from "src/app/models/interfaces/movie.interface";
 import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class TMDBService {
-  private lastQueriedMovies: SearchMovieResponse | undefined;
-  private _lastQueriedMovie: Movie | undefined;
-  private get lastQueriedMovie(): Movie | undefined {
-    return this._lastQueriedMovie;
-  };
-  private set lastQueriedMovie(movie: Movie | undefined) {
-    if (typeof movie !== 'undefined') {
-      localStorage.removeItem('movie');
-      localStorage.setItem('movie', JSON.stringify(movie));
-    } else {
-      localStorage.removeItem('movie');
-    }
-
-    this._lastQueriedMovie = movie;
-  }
+  lastQueriedMovies: ReplaySubject<SearchMovieResponse | undefined> = new ReplaySubject<SearchMovieResponse | undefined>(1);
+  lastQueriedMovie: ReplaySubject<Movie | undefined> = new ReplaySubject<Movie | undefined>(1);
+  lastQueriedMovieExtended: ReplaySubject<MovieExtendedInfo | undefined> = new ReplaySubject<MovieExtendedInfo | undefined>(1);
 
   constructor(private http: HttpClient) {
-    const movieStr: string | null = localStorage.getItem('movie');
-    if (movieStr) {
-      const storedMovie: Movie | undefined = JSON.parse(movieStr);
-  
-      if (storedMovie) {
-        this.lastQueriedMovie = storedMovie;
+    // re-hydration from storage
+    const storedMovie = this.getStorageItem<Movie | undefined>('movie');
+    if (storedMovie) {
+      this.lastQueriedMovie.next(storedMovie);
+      const storedMovieExtended = this.getStorageItem<MovieExtendedInfo | undefined>('movie');
+
+      if (storedMovieExtended) {
+        this.lastQueriedMovieExtended.next(storedMovieExtended);
       }
     }
   }
 
-  getLastQueriedMovies = (): SearchMovieResponse | undefined => this.lastQueriedMovies;
-  getLastQueriedMovie = (): Movie | undefined => this.lastQueriedMovie;
-  resetLastQueriedMovie = (): void => this.lastQueriedMovie = undefined;
-  // configuration = (): Observable<any> => {
-  //   return this.http.get<any>(`${environment.baseUrl}/configuration`)
-  //   .pipe()
-  // }
-  // requestToken = (): Observable<any> => this.http.post<any>(`${environment.baseUrl}`)
+  setLastQueriedMovie = (movie: Movie | undefined) => this.setSubject<Movie | undefined>('movie', movie, () => this.lastQueriedMovie.next(movie));
+  setLastQueriedMovieExtendedInfo = (extendedInfo: MovieExtendedInfo | undefined) => this.setSubject<MovieExtendedInfo | undefined>('movieExtended', extendedInfo, () => this.lastQueriedMovieExtended.next(extendedInfo));
+
   movies = (query: string): Observable<SearchMovieResponse> => {
     const params = new HttpParams().append('query', query);
       
@@ -53,16 +38,14 @@ export class TMDBService {
           results: response.results.filter(movie => !!movie.poster_path).sort((m1, m2) => m1.title.localeCompare(m2.title))
         };
         
-        this.lastQueriedMovies = mappedResponse;
         return mappedResponse;
-      }));
+      }),
+      tap((mappedResponse: SearchMovieResponse) => this.lastQueriedMovies.next(mappedResponse))
+    );
   };
 
   movie = (movie_id: number): Observable<Movie> => {
-    return this.http.get<Movie>(`${environment.baseUrl}/movie/${movie_id}`)
-    .pipe(
-      tap((movie: Movie) => this.lastQueriedMovie = movie)
-    );
+    return this.http.get<Movie>(`${environment.baseUrl}/movie/${movie_id}`);
   };
 
   movieCredits = (movie_id: number): Observable<MovieCredits> => {
@@ -83,4 +66,20 @@ export class TMDBService {
       map((response: MovieProvidersResponse) => response.results['IT'])
     );
   };
+
+  private setSubject = <T>(key: string, value: T, callbackFn: () => void): void => {
+    if (typeof value !== 'undefined') {
+      localStorage.removeItem(key);
+      localStorage.setItem(key, JSON.stringify(value));
+    } else {
+      localStorage.removeItem(key);
+    }
+
+    callbackFn();
+  }
+ 
+  private getStorageItem = <T>(key: string): T => {
+    const localStr: string | null = localStorage.getItem(key);
+    return localStr ? JSON.parse(localStr) : undefined;
+  }
 }
