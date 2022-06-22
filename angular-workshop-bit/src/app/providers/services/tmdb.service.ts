@@ -40,7 +40,7 @@ export class TMDBService {
         
         return mappedResponse;
       }),
-      tap((mappedResponse: SearchMovieResponse) => this.lastQueriedMovies.next(mappedResponse))
+      // tap((mappedResponse: SearchMovieResponse) => this.lastQueriedMovies.next(mappedResponse))
     );
   };
 

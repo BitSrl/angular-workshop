@@ -1,129 +1,32 @@
-<ng-container *ngIf="movie">
-  <section class="movie-header-container w-100"
-    [style.background-image]="'url(https://image.tmdb.org/t/p/w1920_and_h800_multi_faces' + movie.backdrop_path + ')'">
-    <article class="movie-header d-flex justify-content-center py-5">
-      <div class="d-flex" style="max-height: 450px; max-width: 75%;">
-        <div style="width: 300px;">
-          <div class="movie-poster-container">
-            <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2{{movie.poster_path}}" width="300px" />
-          </div>
-        </div>
-        <div class="p-3 d-flex justify-content-between align-items-start flex-column">
-          <div>
-            <h1>{{movie.original_title}} ({{movie.release_date | date:'yyyy'}})</h1>
-            <h4>
-              <ng-container *ngFor="let genre of movie.genres; let index = index">
-                {{ genre.name + (index < movie.genres.length - 1 ? ', ' : '' )}}</ng-container> -
-              {{ movie.runtime | runtime }}
-            </h4>
-          </div>
-          <div>
-            <h3><em>{{movie.tagline}}</em></h3>
-            <h2>Description</h2>
-            <p style="font-size: 2rem; line-height: 2rem;">{{movie.overview}}</p>
-          </div>
-          <div class="d-flex justify-content-between align-items-center w-100 pt-3">
-            <div>
-              <div class="col-12"><strong>{{ director?.name }}</strong></div>
-              <div class="col-12"><em>Director</em></div>
-            </div>
-            <div>
-              <a href="{{movie.homepage}}" target="_blank"><i class="me-2 fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Browse website</a>
-            </div>
-          </div>
+<section class="mb-3" *ngIf="movie$ | async as movie">
+  <app-movie-heading [movie]="movie" [director]="director"></app-movie-heading>
+  <app-details-divider>
+    <app-details-info-item label="Status" value="{{movie.status}}"></app-details-info-item>
+    <app-details-info-item label="Original Language" value="{{movie.original_language}}"></app-details-info-item>
+    <app-details-info-item label="Budget" value="{{movie.budget | currency: '$'}}"></app-details-info-item>
+    <app-details-info-item label="Revenue" value="{{movie.revenue | currency: '$'}}"></app-details-info-item>
+  </app-details-divider>
+  <ng-container *ngIf="extendedInfo$ | async as extendedInfo">
+    <app-movie-cast *ngIf="extendedInfo.credits" [cast]="extendedInfo.credits.cast" (viewAllCast)="viewAllCast(movie.id)"></app-movie-cast>
+    <app-details-divider>
+      <app-movie-watch-providers-item heading="Now Streaming" [providers]="extendedInfo.watchProviders?.flatrate"></app-movie-watch-providers-item>
+      <app-movie-watch-providers-item heading="Rent" [providers]="extendedInfo.watchProviders?.rent"></app-movie-watch-providers-item>
+      <app-movie-watch-providers-item heading="Buy" [providers]="extendedInfo.watchProviders?.buy"></app-movie-watch-providers-item>
+    </app-details-divider>
+    <app-movies-list heading="Similar Movies" subheading="View all similar movies " [movies]="extendedInfo?.similarMovies" (redirect)="viewAllSimilarMovies(movie.id)" (relatedMovie)="goToRelatedMovie($event)"></app-movies-list>
+    <app-details-divider>
+      <div class="d-flex align-items-center w-100 my-3" style="height: 260px; border-radius: 20px;"
+      [style.background-image]="'url(https://image.tmdb.org/t/p/w1440_and_h320_multi_faces' + movie?.belongs_to_collection.backdrop_path + ')'">
+        <div class="d-flex flex-column justify-content-center ps-3 w-100 h-100" style="background: linear-gradient(to right, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.75));">
+          <h2>{{movie?.belongs_to_collection?.name}}</h2>
+          <button mat-flat-button class="d-block bg-primary text-light" style="border-radius: 25px; width: 12rem;">GO TO COLLECTION</button>
         </div>
       </div>
-    </article>
-  </section>
-  <!-- <section class="extra-info-strip-container w-100">
-    <article class="d-flex justify-content-center w-100">
-      <div style="width: 75%" class="d-flex justify-content-between align-items-center extra-info-strip"> -->
-        <app-details-divider>
-          <app-details-info-item label="Status" value="{{movie.status}}"></app-details-info-item>
-          <app-details-info-item label="Original Language" value="{{movie.original_language}}"></app-details-info-item>
-          <app-details-info-item label="Budget" value="{{movie.budget | currency: '$'}}"></app-details-info-item>
-          <app-details-info-item label="Revenue" value="{{movie.revenue | currency: '$'}}"></app-details-info-item>
-          <!-- <div #info class="w-25 p-3 text-center"><strong>Status:</strong><br /> {{movie.status}}</div>
-          <div #info class="w-25 p-3 text-center"><strong>Original Language:</strong><br /> {{movie.original_language}}</div>
-          <div #info class="w-25 p-3 text-center"><strong>Budget:</strong><br /> {{movie.budget | currency: '$'}}</div>
-          <div #info class="w-25 p-3 text-center"><strong>Revenue:</strong><br /> {{movie.revenue | currency: '$'}}</div> -->
-        </app-details-divider>
-      <!-- </div>
-    </article>
-  </section> -->
-</ng-container>
-<section class="cast-container w-100 mb-5" *ngIf="credits">
-  <article class="d-flex justify-content-center pt-3">
-    <div style="width: 75%;">
-      <div class="px-3 d-flex justify-content-between align-items-center w-100">
-        <h2>Main cast</h2>
-        <div>
-          <button mat-stroked-button color="primary" (click)="viewAllCast()">
-            View all cast and crew <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;"
-        [ngStyle]="{ 'max-width': '2920px' }">
-        <div *ngFor="let people of credits.cast | slice:0:10" fxFlex="292px">
-          <mat-card>
-            <img mat-card-image src="https://image.tmdb.org/t/p/w276_and_h350_face{{people.profile_path}}"
-              title="Photo of {{people.name}}" width="276px" height="350px">
-            <div class="p-2">
-              <p><strong>{{people.name}}</strong></p>
-              <p>{{people.character}}</p>
-            </div>
-          </mat-card>
-        </div>
-      </div>
-    </div>
-  </article>
+    </app-details-divider>
+    <app-movies-list heading="Suggested Movies" subheading="View all suggested movies " [movies]="extendedInfo?.recommendedMovies" (redirect)="viewAllRecommendedMovies(movie.id)" (relatedMovie)="goToRelatedMovie($event)"></app-movies-list>
+  </ng-container>
 </section>
-<section class="extra-info-strip-container w-100">
-  <article class="d-flex justify-content-center w-100">
-    <div style="width: 75%" class="row justify-content-between align-items-center extra-info-strip">
-      <div class="col">
-        <div class="row">
-          <div class="col-12 p-3 text-center">
-            <strong>Now Streaming</strong>
-          </div>
-        </div>
-        <div class="col-12 p-3 text-center">
-          <ng-container *ngFor="let provider of watchProviders?.flatrate">
-            <img src="https://image.tmdb.org/t/p/original{{provider.logo_path}}" width="36" height="36"
-              title="{{provider.provider_name}}" alt="Now streaming on {{provider.provider_name}}" class="me-2" />
-          </ng-container>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <div class="col-12 p-3 text-center">
-            <strong>Rent</strong>
-          </div>
-        </div>
-        <div class="col-12 p-3 text-center">
-          <ng-container *ngFor="let provider of watchProviders?.rent">
-            <img src="https://image.tmdb.org/t/p/original{{provider.logo_path}}" width="36" height="36"
-              title="{{provider.provider_name}}" alt="Now streaming on {{provider.provider_name}}" class="me-2" />
-          </ng-container>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <div class="col-12 p-3 text-center">
-            <strong>Buy</strong>
-          </div>
-        </div>
-        <div class="col-12 p-3 text-center">
-          <ng-container *ngFor="let provider of watchProviders?.buy">
-            <img src="https://image.tmdb.org/t/p/original{{provider.logo_path}}" width="36" height="36"
-              title="{{provider.provider_name}}" alt="Now streaming on {{provider.provider_name}}" class="me-2" />
-          </ng-container>
-        </div>
-      </div>
-    </div>
-  </article>
-</section>
-<section class="similar-movies-container w-100 mb-5" *ngIf="similarMovies">
+<!-- <section class="similar-movies-container w-100 mb-5" *ngIf="similarMovies">
   <article class="d-flex justify-content-center pt-3">
     <div style="width: 75%;">
       <div class="px-3 d-flex justify-content-between align-items-center w-100">
@@ -149,8 +52,8 @@
       </div>
     </div>
   </article>
-</section>
-<section class="extra-info-strip-container w-100" *ngIf="movie?.belongs_to_collection">
+</section> -->
+<!-- <section class="extra-info-strip-container w-100" *ngIf="movie?.belongs_to_collection">
   <article class="d-flex justify-content-center w-100">
     <div style="width: 75%" class="d-flex justify-content-between align-items-center extra-info-strip">
       <div class="d-flex align-items-center w-100 my-3" style="height: 260px; border-radius: 20px;"
@@ -189,4 +92,4 @@
       </div>
     </div>
   </article>
-</section>
+</section> -->

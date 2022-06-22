@@ -1,0 +1,26 @@
+<section class="cast-container w-100 mb-5" *ngIf="cast">
+  <article class="d-flex justify-content-center pt-3">
+    <div style="width: 75%;">
+      <div class="px-3 d-flex justify-content-between align-items-center w-100">
+        <h2>Main cast</h2>
+        <div>
+          <button mat-stroked-button color="primary" (click)="viewAllCast.emit()">
+            View all cast and crew <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;"
+        [ngStyle]="{ 'max-width': '2920px' }">
+        <div *ngFor="let people of cast | slice:0:10" fxFlex="292px">
+          <mat-card>
+            <img mat-card-image src="https://image.tmdb.org/t/p/w276_and_h350_face{{people.profile_path}}"
+              title="Photo of {{people.name}}" width="276px" height="350px">
+            <div class="p-2">
+              <p><strong>{{people.name}}</strong></p>
+              <p>{{people.character}}</p>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>

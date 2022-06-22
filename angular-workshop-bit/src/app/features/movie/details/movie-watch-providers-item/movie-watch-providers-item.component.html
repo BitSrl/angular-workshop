@@ -1,0 +1,7 @@
+<section class="p-3 text-center">
+  <h3>{{heading}}</h3>
+  <ng-container *ngFor="let provider of providers">
+    <img src="https://image.tmdb.org/t/p/original{{provider.logo_path}}" width="36" height="36"
+      title="{{provider.provider_name}}" alt="Now available on {{provider.provider_name}}" class="me-2" />
+  </ng-container>
+</section>
