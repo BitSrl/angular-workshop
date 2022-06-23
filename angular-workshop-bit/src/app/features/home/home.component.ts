@@ -30,10 +30,9 @@ export class HomeComponent extends UnsubscriptionHandler implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       takeUntil(this.destroy$),
+      map((query: string) => this.store.dispatch(MovieActions.GetMovies({ query })))
     )
-    .subscribe({
-      next: (query: string) => this.store.dispatch(MovieActions.GetMovies({ query }))
-    });
+    .subscribe();
 
     // this.tmdbService.lastQueriedMovies
     // .pipe(takeUntil(this.destroy$))

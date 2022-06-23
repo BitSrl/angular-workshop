@@ -33,7 +33,7 @@ export class TMDBService {
     return this.http.get<SearchMovieResponse>(`${environment.baseUrl}/search/movie`, { params })
     .pipe(
       map((response: SearchMovieResponse) => {
-        const mappedResponse = {
+        const mappedResponse: SearchMovieResponse = {
           ...response,
           results: response.results.filter(movie => !!movie.poster_path).sort((m1, m2) => m1.title.localeCompare(m2.title))
         };
