@@ -19,7 +19,26 @@ import { MovieWatchProvidersItemComponent } from './details/movie-watch-provider
 import { MoviesListComponent } from './details/movies-list/movies-list.component';
 
 @NgModule({
-  declarations: [MovieComponent, DetailsComponent, CreditsComponent, DetailsDividerComponent, DetailsInfoItemComponent, MovieHeadingComponent, MovieCastComponent, MovieWatchProvidersItemComponent, MoviesListComponent ],
-  imports: [CommonModule, MovieRoutingModule, RuntimePipeModule, MatCardModule, FlexLayoutModule, MatButtonModule, VoteAverageModule, ListHandlerModule],
+  declarations: [
+    MovieComponent,
+    DetailsComponent,
+    CreditsComponent,
+    DetailsDividerComponent,
+    DetailsInfoItemComponent,
+    MovieHeadingComponent,
+    MovieCastComponent,
+    MovieWatchProvidersItemComponent,
+    MoviesListComponent,
+  ],
+  imports: [
+    CommonModule,
+    MovieRoutingModule,
+    RuntimePipeModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    VoteAverageModule,
+    ListHandlerModule,
+  ],
 })
 export class MovieModule {}
