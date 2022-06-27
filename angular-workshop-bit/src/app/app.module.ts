@@ -11,6 +11,8 @@ import { StoreModule } from '@ngrx/store';
 import * as store from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { LoggedGuard } from './providers/guards/logged.guard';
+import { AdminGuard } from './providers/guards/admin.guard';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,7 +26,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     StoreDevtoolsModule.instrument(store.devtoolsConfig)
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true },
+    LoggedGuard,
+    AdminGuard
   ],
   bootstrap: [AppComponent],
 })

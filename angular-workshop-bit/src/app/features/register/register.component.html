@@ -1,0 +1,40 @@
+<section class="container mt-5">
+  <article class="row justify-content-center align-items-center">
+    <form class="col-4" [formGroup]="form" (ngSubmit)="register()">
+      <div class="row text-dark">
+        <div class="col-12 mb-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" /> 
+            <mat-hint class="d-flex justify-content-between align-items-center w-100">
+              <div>
+                Username length must be between 4 and 8 chars
+              </div>
+              <div class="text-end">
+                {{ form.get('username')?.value?.length || 0}}/8
+              </div>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" /> 
+            <mat-hint>Username length must be of at least 8 chars</mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option *ngFor="let role of roles" [value]="role">{{ role | uppercase }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <button mat-stroked-button class="w-100">REGISTER</button> 
+        </div>
+      </div>
+    </form>
+  </article>
+</section>
