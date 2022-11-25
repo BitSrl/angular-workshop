@@ -7,3 +7,43 @@
     </div>
   </article>
 </section>
+
+<!-- 
+  <ng-container></ng-container> 
+    => è un contenitore logico che non crea alcun elemento contenitore nel DOM (diversamente da un div)
+    => è perfetto per applicare direttive strutturali che pilotano il rendering della nostra vista (*ngIf, *ngFor, *ngSwitch, *ngTemplateOutlet)
+
+  <ng-template></ng-template
+    => è necessario che venga definito un nome per il template preceduto dal carattere  # (#myTemplate)
+    => è l'elemento perfetto per creare porzioni di vista (html) riutilizzabili combinandolo con la direttiva strutturale *ngTemplateOutlet
+    => è possibile passare dei dati al nostro template dall'esterno, leggasi variabili di contesto
+    => qualora volessimo recuperare il riferimento al nostro template dalla classe TypeScript, è possibile farlo tramite l'uso dei decorator @ViewChild o @ViewChildren
+    => questi riferimenti saranno valorizzati soltanto a partire dallo step del ciclo vitale del componente AfterViewInit, precedetenemente saranno undefined
+
+    => permette di proiettare del contenuto da parte di un componente padre all'interno di un componente figlio, indicandolo tra i selettori del componente figlio
+        <app-main>
+          <app-child>
+            Testo di esempio
+          </app-child>
+        </app-main>
+
+        <h1>Ciao, sono l'app-child.</h1>
+        <ng-content></ng-content>
+    
+    => è possibile proiettare più contenuti (Multi-slot content projection) indicando dei selettori per i contenuti oltre il primo
+        <app-main>
+          <app-child>
+            Testo di esempio
+            <p projection2>proj 2</p>
+            <p projection3>proj 3</p>
+            <p projection4>proj 4</p>
+          </app-child>
+        </app-main>
+
+        <ng-content></ng-content>
+        <ng-content select="[projection2]"></ng-content>
+        <ng-content select="[projection3]"></ng-content>
+        <ng-content select="[projection4]"></ng-content>
+
+
+ -->

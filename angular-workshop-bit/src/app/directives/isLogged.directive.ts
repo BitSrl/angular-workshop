@@ -14,7 +14,7 @@ export class IsLoggedDirective extends UnsubscriptionHandler implements OnInit {
     this.authService.user$
       .pipe(
         takeUntil(this.destroy$),
-        map((user) => !!user)
+        map((user) => !!user) // !!bitwise operator => convert to 1 or 0 => 0 = false
       )
       .subscribe({
         next: (logged: boolean) => {

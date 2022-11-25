@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, filter, map, Observable, Observer, takeUntil } from 'rxjs';
@@ -30,9 +30,10 @@ export class HomeComponent extends UnsubscriptionHandler implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
       takeUntil(this.destroy$),
-      map((query: string) => this.store.dispatch(MovieActions.GetMovies({ query })))
     )
-    .subscribe();
+    .subscribe({
+      next: (query: string) => this.store.dispatch(MovieActions.GetMovies({ query }))
+    });
 
     // this.tmdbService.lastQueriedMovies
     // .pipe(takeUntil(this.destroy$))

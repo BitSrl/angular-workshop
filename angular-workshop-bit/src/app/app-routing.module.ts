@@ -7,35 +7,26 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    loadChildren: () =>
-      import('./features/login/login.module').then((m) => m.LoginModule),
+    loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'register',
-    loadChildren: () =>
-      import('./features/register/register.module').then(
-        (m) => m.RegisterModule
-      ),
+    loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
   },
   {
     path: 'home',
-    loadChildren: () =>
-      import('./features/home/home.module').then((m) => m.HomeModule),
-    canActivate: [LoggedGuard]
+    loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule),
+    canActivate: [LoggedGuard],
   },
   {
     path: 'movie',
-    loadChildren: () =>
-      import('./features/movie/movie.module').then((m) => m.MovieModule),
-      canActivate: [LoggedGuard]
-
+    loadChildren: () => import('./features/movie/movie.module').then((m) => m.MovieModule),
+    canActivate: [LoggedGuard],
   },
   {
     path: 'admin',
-    loadChildren: () =>
-      import('./features/admin/admin.module').then((m) => m.AdminModule),
-      canActivate: [LoggedGuard, AdminGuard]
-
+    loadChildren: () => import('./features/admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [LoggedGuard, AdminGuard],
   },
   { path: '**', redirectTo: 'home' },
 ];

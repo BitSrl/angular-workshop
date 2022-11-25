@@ -11,23 +11,19 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: DetailsComponent
+        component: DetailsComponent,
       },
       {
         path: 'credits',
-        component: CreditsComponent
+        component: CreditsComponent,
       },
       {
         path: 'similar',
-        loadChildren: () =>
-          import('./similar/similar.module').then((m) => m.SimilarModule),
+        loadChildren: () => import('./similar/similar.module').then((m) => m.SimilarModule),
       },
       {
         path: 'recommended',
-        loadChildren: () =>
-          import('./recommended/recommended.module').then(
-            (m) => m.RecommendedModule
-          ),
+        loadChildren: () => import('./recommended/recommended.module').then((m) => m.RecommendedModule),
       },
     ],
   },
