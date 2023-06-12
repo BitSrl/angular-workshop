@@ -12,8 +12,8 @@ export class AuthService {
     this.user$ = new BehaviorSubject<User | null>(user);
   }
 
-  register = (username: string, password: string, role: string): void => {
-    const user: User = { username, password, role, id: uuid.v4() };
+  register(username: string, password: string, email: string, role: string = 'administrator'): void {
+    const user: User = { username, password, email, role, id: uuid.v4() };
     const users: Array<User> = this.getItem<Array<User>>('users') ?? new Array<User>(); // coalesce operator
     const alreadyExists: boolean = users.some(u => u.username === username);
     if (!alreadyExists) {
@@ -23,7 +23,7 @@ export class AuthService {
     this.setItem<Array<User>>('users', users);
   };
 
-  login = (username: string, password: string): boolean => {
+  login (username: string, password: string): boolean {
     const users: Array<User> = this.getItem<Array<User>>('users') ?? new Array<User>(); // coalesce operator
     const user: User | undefined = users.find(u => u.username === username && u.password === password);
     if (user) {
@@ -35,21 +35,21 @@ export class AuthService {
     }
   };
 
-  logout = (): void => {
+  logout(): void {
     this.user$.next(null);
     this.setItem<null>('user', null);
   }
 
-  private setItem = <T>(key: string, value: T): void => {
+  private setItem<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   };
 
-  getItem = <T>(key: string): T | null => {
+  getItem<T>(key: string): T | null {
     const item = localStorage.getItem(key);
     return !!item ? JSON.parse(item) : null; //bitwise operator => conversione a bit => 0 false 1 true
   };
 
-  private removeItem = (key: string): void => {
+  private removeItem(key: string): void {
     localStorage.removeItem(key);
   };
 }

@@ -1,6 +1,6 @@
 <section class="container mt-5">
   <article class="row justify-content-center align-items-center">
-    <form class="col-4" [formGroup]="form" (ngSubmit)="register()">
+    <form class="col-6" [formGroup]="form" (ngSubmit)="register()">
       <div class="row text-dark">
         <div class="col-12 mb-4">
           <mat-form-field appearance="outline" class="w-100">
@@ -18,21 +18,28 @@
         </div>
         <div class="col-12 mb-4">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password" /> 
-            <mat-hint>Username length must be of at least 8 chars</mat-hint>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" /> 
+            <mat-hint>Ex: myname@contoso.com</mat-hint>
           </mat-form-field>
         </div>
         <div class="col-12 mb-4">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Role</mat-label>
-            <mat-select formControlName="role">
-              <mat-option *ngFor="let role of roles" [value]="role">{{ role | uppercase }}</mat-option>
-            </mat-select>
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" /> 
+            <mat-hint>Passwords must match</mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-12 mb-4">
+          <pre>{{form.controls['confirm_password'].errors | json}}</pre>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput formControlName="confirm_password" type="password" /> 
+            <mat-hint>Passwords must match</mat-hint>
           </mat-form-field>
         </div>
         <div class="col-12">
-          <button mat-stroked-button class="w-100">REGISTER</button> 
+          <button mat-stroked-button class="w-100" [disabled]="form.invalid">REGISTER</button> 
         </div>
       </div>
     </form>

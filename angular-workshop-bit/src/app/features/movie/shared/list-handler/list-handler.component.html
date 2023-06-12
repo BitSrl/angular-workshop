@@ -1,7 +1,7 @@
 <section class="list-handler-container w-100" *ngIf="itemTemplate && list">
   <article class="">
     <div class="list-handler-item-container" fxLayout="row wrap" fxLayoutGap="16px grid">
-      <div class="list-handler-item" [fxFlex]="itemSize || '50%'" *ngFor="let element of list">
+      <div class="list-handler-item" [fxFlex]="itemSize || '50%'" *ngFor="let element of list;">
         <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: element }"></ng-container>
       </div>
     </div>

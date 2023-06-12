@@ -17,6 +17,7 @@ import { MovieHeadingComponent } from './details/movie-heading/movie-heading.com
 import { MovieCastComponent } from './details/movie-cast/movie-cast.component';
 import { MovieWatchProvidersItemComponent } from './details/movie-watch-providers-item/movie-watch-providers-item.component';
 import { MoviesListComponent } from './details/movies-list/movies-list.component';
+import { MovieDetailResolver } from 'src/app/providers/resolvers/movie-details.resolver';
 
 @NgModule({
   declarations: [
@@ -40,5 +41,6 @@ import { MoviesListComponent } from './details/movies-list/movies-list.component
     VoteAverageModule,
     ListHandlerModule,
   ],
+  providers: [MovieDetailResolver]
 })
 export class MovieModule {}

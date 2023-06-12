@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MovieDetailResolver } from 'src/app/providers/resolvers/movie-details.resolver';
 import { CreditsComponent } from './credits/credits.component';
 import { DetailsComponent } from './details/details.component';
 import { MovieComponent } from './movie.component';
@@ -12,6 +13,9 @@ const routes: Routes = [
       {
         path: '',
         component: DetailsComponent,
+        resolve: {
+          movie: MovieDetailResolver
+        },
       },
       {
         path: 'credits',

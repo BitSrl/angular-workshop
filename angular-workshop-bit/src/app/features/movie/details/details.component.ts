@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, takeUntil, tap } from 'rxjs';
+import { filter, Observable, tap } from 'rxjs';
 import { Movie, MovieCredits, MovieCrew, MovieExtendedInfo, MovieProvidersResponseResult } from 'src/app/models/interfaces/movie.interface';
 import { SearchMovieResult } from 'src/app/models/interfaces/search-movie-response.interface';
-import { TMDBService } from 'src/app/providers/services/tmdb.service';
 import { MovieActions } from 'src/app/store/action-types/movie.action-types';
 import { SystemActions } from 'src/app/store/action-types/system.action-types';
 import { selectCurrentMovie, selectCurrentMovieExtendedInfo } from 'src/app/store/selectors/movie.selectors';
@@ -29,11 +28,9 @@ export class DetailsComponent extends UnsubscriptionHandler implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute, 
-    private tmdbService: TMDBService,
     private store: Store<AppState>
   ) {
     super();
-
     const id: number = +this.activatedRoute.snapshot.params['id'];
     this.store.dispatch(MovieActions.GetSelectedMovie({ id }));
     this.store.dispatch(MovieActions.GetMovieExtendedInfo({ id }));
@@ -105,8 +102,19 @@ export class DetailsComponent extends UnsubscriptionHandler implements OnInit {
       );
   }
 
-  viewAllCast = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/credits` }));
-  viewAllSimilarMovies = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/similar` }));
-  viewAllRecommendedMovies = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/recommended` }));
-  goToRelatedMovie = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  viewAllCast(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/credits` }));
+  }
+
+  viewAllSimilarMovies(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/similar` }));
+  }
+
+  viewAllRecommendedMovies(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}/recommended` }));
+  }
+
+  goToRelatedMovie(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  }
 }

@@ -9,9 +9,9 @@
   <ng-container *ngIf="extendedInfo$ | async as extendedInfo">
     <app-movie-cast *ngIf="extendedInfo.credits" [cast]="extendedInfo.credits.cast" (viewAllCast)="viewAllCast(movie.id)"></app-movie-cast>
     <app-details-divider>
-      <app-movie-watch-providers-item heading="Now Streaming" [providers]="extendedInfo.watchProviders?.flatrate"></app-movie-watch-providers-item>
-      <app-movie-watch-providers-item heading="Rent" [providers]="extendedInfo.watchProviders?.rent"></app-movie-watch-providers-item>
-      <app-movie-watch-providers-item heading="Buy" [providers]="extendedInfo.watchProviders?.buy"></app-movie-watch-providers-item>
+      <app-movie-watch-providers-item heading="Now Streaming" [providers]="extendedInfo.watchProviders.flatrate"></app-movie-watch-providers-item>
+      <app-movie-watch-providers-item heading="Rent" [providers]="extendedInfo.watchProviders.rent"></app-movie-watch-providers-item>
+      <app-movie-watch-providers-item heading="Buy" [providers]="extendedInfo.watchProviders.buy"></app-movie-watch-providers-item>
     </app-details-divider>
     <app-movies-list heading="Similar Movies" subheading="View all similar movies " [movies]="extendedInfo?.similarMovies" (redirect)="viewAllSimilarMovies(movie.id)" (relatedMovie)="goToRelatedMovie($event)"></app-movies-list>
     <app-details-divider>
