@@ -16,3 +16,16 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.cast-elements {
+  display: grid;
+  grid-template-columns: repeat(10, 276px);
+  gap: 16px;
+}
+
+.similar-elements,
+.recommended-elements {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(10, 250px);
+}

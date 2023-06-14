@@ -2,11 +2,11 @@
   <div class="row w-100 px-3">
     <div class="col-6">
       <h1>Cast ({{credits.cast.length}})</h1>
-      <app-list-handler [list]="credits.cast" [itemTemplate]="itemTemplate" itemSize="33%"></app-list-handler>
+      <app-list-handler [list]="credits.cast" [itemTemplate]="itemTemplate" />
     </div>
     <div class="col-6">
       <h1>Crew ({{credits.crew.length}})</h1>
-      <app-list-handler [list]="credits.crew" [itemTemplate]="itemTemplate" itemSize="33%"></app-list-handler>
+      <app-list-handler [list]="credits.crew" [itemTemplate]="itemTemplate" />
     </div>
   </div>
 </ng-container>

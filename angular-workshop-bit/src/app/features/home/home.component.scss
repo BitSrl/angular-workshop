@@ -10,3 +10,9 @@
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 358px);
+  gap: 16px;
+}
