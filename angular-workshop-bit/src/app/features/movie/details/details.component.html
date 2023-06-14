@@ -62,9 +62,9 @@
             View all cast and crew <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;"
+      <div class="px-3 d-flex g-3" style="overflow-x: scroll;"
         [ngStyle]="{ 'max-width': '2920px' }">
-        <div *ngFor="let people of credits.cast | slice:0:10" fxFlex="292px">
+        <div *ngFor="let people of credits.cast | slice:0:10" style="width: 292px">
           <mat-card>
             <img mat-card-image src="https://image.tmdb.org/t/p/w276_and_h350_face{{people.profile_path}}"
               title="Photo of {{people.name}}" width="276px" height="350px">
@@ -133,9 +133,9 @@
             View all similar movies <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;"
+      <div class="px-3 d-flex g-3" style="overflow-x: scroll;"
         [ngStyle]="{ 'max-width': '2660px' }">
-        <div *ngFor="let movie of similarMovies | slice:0:10" fxFlex="266px" style="cursor: pointer;"
+        <div *ngFor="let movie of similarMovies | slice:0:10" style="cursor: pointer; width: 266px;"
           (click)="goToRelatedMovie(movie.id)">
           <mat-card>
             <img mat-card-image src="https://image.tmdb.org/t/p/w250_and_h141_face{{movie.backdrop_path}}"
@@ -173,9 +173,9 @@
             View all suggested movies <i class="fa-solid fa-arrow-right fa-lg ms-2" aria-hidden="true"></i></button>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutGap="16px grid" class="px-3" style="overflow-x: scroll;"
+      <div class="px-3 d-flex g-3" style="overflow-x: scroll;"
         [ngStyle]="{ 'max-width': '2660px' }">
-        <div *ngFor="let movie of recommendedMovies | slice:0:10" fxFlex="266px" style="cursor: pointer;"
+        <div *ngFor="let movie of recommendedMovies | slice:0:10" style="cursor: pointer; width: 266px;"
           (click)="goToRelatedMovie(movie.id)">
           <mat-card>
             <img mat-card-image src="https://image.tmdb.org/t/p/w250_and_h141_face{{movie.backdrop_path}}"

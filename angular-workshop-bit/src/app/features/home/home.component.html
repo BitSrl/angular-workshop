@@ -13,8 +13,8 @@
   </section>
 </main>
 
-<div fxLayout="row wrap" fxLayoutGap="16px grid" class="w-100 ps-3">
-  <div *ngFor="let movie of movies?.results" fxFlex="358px" (click)="movieDetails(movie.id)" style="cursor: pointer;">
+<div class="w-100 ps-3 d-flex flex-wrap g-3">
+  <div *ngFor="let movie of movies?.results" (click)="movieDetails(movie.id)" style="cursor: pointer; width: 358px;">
     <mat-card class="p-3" style="min-height: 747px;">
       <mat-card-header>
         <mat-card-title>{{movie.title}}</mat-card-title>
