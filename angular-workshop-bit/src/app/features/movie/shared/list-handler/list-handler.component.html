@@ -1,15 +1,12 @@
 <section class="list-handler-container w-100" *ngIf="itemTemplate && list">
-  <article class="">
-    <div class="list-handler-item-container d-flex flex-wrap g-3">
-      <div
-        class="list-handler-item"
-        [ngStyle]="{ width: itemSize || '50%' }"
-        *ngFor="let element of list"
-      >
-        <ng-container
-          *ngTemplateOutlet="itemTemplate; context: { $implicit: element }"
-        ></ng-container>
-      </div>
+  <article class="list-handler-items">
+    <div
+      class="list-handler-item"
+      *ngFor="let element of list"
+    >
+      <ng-container
+        *ngTemplateOutlet="itemTemplate; context: { $implicit: element }"
+      ></ng-container>
     </div>
   </article>
 </section>

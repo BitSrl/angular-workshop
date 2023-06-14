@@ -13,7 +13,7 @@
   </section>
 </main>
 
-<div class="w-100 ps-3 d-flex flex-wrap g-3">
+<div class="w-100 ps-3 movies-grid">
   <div *ngFor="let movie of movies?.results" (click)="movieDetails(movie.id)" style="cursor: pointer; width: 358px;">
     <mat-card class="p-3" style="min-height: 747px;">
       <mat-card-header>
