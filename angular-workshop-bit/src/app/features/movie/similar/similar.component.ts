@@ -25,5 +25,7 @@ export class SimilarComponent extends UnsubscriptionHandler {
     )
   }
 
-  goToRelatedMovie = (movie_id: number): Promise<boolean> => this.router.navigateByUrl(`/movie/${movie_id}`);
+  goToRelatedMovie(movie_id: number): void {
+    this.router.navigateByUrl(`/movie/${movie_id}`);
+  }
 }

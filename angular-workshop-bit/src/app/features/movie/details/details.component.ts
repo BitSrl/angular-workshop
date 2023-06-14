@@ -185,12 +185,19 @@ export class DetailsComponent extends UnsubscriptionHandler {
       });
   }
 
-  viewAllCast = (): Promise<boolean> =>
+  viewAllCast(): void {
     this.router.navigateByUrl(`/movie/${this.movie!.id}/credits`);
-  viewAllSimilarMovies = (): Promise<boolean> =>
+  }
+
+  viewAllSimilarMovies(): void {
     this.router.navigateByUrl(`/movie/${this.movie!.id}/similar`);
-  viewAllRecommendedMovies = (): Promise<boolean> =>
+  }
+
+  viewAllRecommendedMovies(): void {
     this.router.navigateByUrl(`/movie/${this.movie!.id}/recommended`);
-  goToRelatedMovie = (movie_id: number): Promise<boolean> =>
+  }
+
+  goToRelatedMovie(movie_id: number): void {
     this.router.navigateByUrl(`/movie/${movie_id}`);
+  }
 }
