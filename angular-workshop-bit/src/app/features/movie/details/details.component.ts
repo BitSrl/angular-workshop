@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { Movie, MovieCredits, MovieCrew, MovieProvidersResponseResult } from 'src/app/models/interfaces/movie.interface';
@@ -10,7 +10,7 @@ import { TMDBService } from 'src/app/providers/services/tmdb.service';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit, OnDestroy {
+export class DetailsComponent implements OnDestroy {
   movieSubs: Subscription | undefined;
   movieCreditsSubs: Subscription | undefined;
   similarMoviesSubs: Subscription | undefined;
@@ -71,9 +71,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void {
-  }
-
   ngOnDestroy(): void {
     if (this.movieSubs) {
       this.movieSubs.unsubscribe();
@@ -96,8 +93,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewAllCast = (): Promise<boolean> => this.router.navigateByUrl(`/movie/${this.movie!.id}/credits`);
-  viewAllSimilarMovies = (): Promise<boolean> => this.router.navigateByUrl(`/movie/${this.movie!.id}/similar`);
-  viewAllRecommendedMovies = (): Promise<boolean> => this.router.navigateByUrl(`/movie/${this.movie!.id}/recommended`);
-  goToRelatedMovie = (movie_id: number): Promise<boolean> => this.router.navigateByUrl(`/movie/${movie_id}`);
+  viewAllCast(): void {
+    this.router.navigateByUrl(`/movie/${this.movie!.id}/credits`);
+  }
+
+  viewAllSimilarMovies(): void {
+    this.router.navigateByUrl(`/movie/${this.movie!.id}/similar`);
+  }
+
+  viewAllRecommendedMovies(): void {
+    this.router.navigateByUrl(`/movie/${this.movie!.id}/recommended`);
+  }
+
+  goToRelatedMovie(movie_id: number): void {
+    this.router.navigateByUrl(`/movie/${movie_id}`);
+  }
 }
