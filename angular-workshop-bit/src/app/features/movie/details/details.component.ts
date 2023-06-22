@@ -13,7 +13,7 @@ import { UnsubscriptionHandler } from 'src/app/utilities/unsubscription-handler'
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent extends UnsubscriptionHandler implements OnInit {
   movie$: Observable<Movie | undefined> | undefined;

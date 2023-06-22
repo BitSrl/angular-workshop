@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, switchMap, takeUntil } from 'rxjs';
-import { Movie } from 'src/app/models/interfaces/movie.interface';
-import { SearchMovieResponse, SearchMovieResult } from 'src/app/models/interfaces/search-movie-response.interface';
-import { TMDBService } from 'src/app/providers/services/tmdb.service';
+import { Observable } from 'rxjs';
+import { SearchMovieResult } from 'src/app/models/interfaces/search-movie-response.interface';
 import { SystemActions } from 'src/app/store/action-types/system.action-types';
-import { selectCurrentMovieRecommendedMovies, selectCurrentMovieSimilarMovies } from 'src/app/store/selectors/movie.selectors';
+import { selectCurrentMovieRecommendedMovies } from 'src/app/store/selectors/movie.selectors';
 import { AppState } from 'src/app/store/states/app.state';
 import { UnsubscriptionHandler } from 'src/app/utilities/unsubscription-handler';
 
@@ -30,5 +27,7 @@ export class RecommendedComponent extends UnsubscriptionHandler {
     this.recommendedMovies$ = this.store.select(selectCurrentMovieRecommendedMovies);
   }
 
-  goToRelatedMovie = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  goToRelatedMovie(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  }
 }

@@ -8,5 +8,4 @@ import { Component, Input, TemplateRef } from '@angular/core';
 export class ListHandlerComponent {
   @Input() list: Array<any> | undefined;
   @Input() itemTemplate: TemplateRef<unknown> | undefined;
-  @Input() itemSize: string = '50%';
 }

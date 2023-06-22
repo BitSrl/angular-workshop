@@ -30,5 +30,7 @@ export class SimilarComponent extends UnsubscriptionHandler {
     this.similarMovies$ = this.store.select(selectCurrentMovieSimilarMovies);
   }
 
-  goToRelatedMovie = (movie_id: number): void => this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  goToRelatedMovie(movie_id: number): void {
+    this.store.dispatch(SystemActions.Redirect({ url: `/movie/${movie_id}` }));
+  }
 }
