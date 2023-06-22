@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, filter, map, Observable, Observer, takeUntil } from 'rxjs';
 import { SearchMovieResponse } from 'src/app/models/interfaces/search-movie-response.interface';
-import { MovieActions } from 'src/app/store/action-types/movie.action-types';
 import { SystemActions } from 'src/app/store/action-types/system.action-types';
+import { MovieActions } from 'src/app/store/actions/movie.actions';
 import { selectMovies } from 'src/app/store/selectors/movie.selectors';
 import { AppState } from 'src/app/store/states/app.state';
 import { UnsubscriptionHandler } from 'src/app/utilities/unsubscription-handler';
@@ -32,7 +32,7 @@ export class HomeComponent extends UnsubscriptionHandler implements OnInit {
       takeUntil(this.destroy$),
     )
     .subscribe({
-      next: (query: string) => this.store.dispatch(MovieActions.GetMovies({ query }))
+      next: (query: string) => this.store.dispatch(MovieActions.getmovies({ query }))
     });
 
     // this.tmdbService.lastQueriedMovies
